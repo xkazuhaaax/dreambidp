@@ -180,6 +180,38 @@ async function initializeDatabase() {
       } else {
         console.log('✅ Database tables already exist');
         
+        // Check if properties exist and seed if empty
+        const propertiesCheck = await pool.query('SELECT COUNT(*) FROM properties');
+        const propertyCount = parseInt(propertiesCheck.rows[0].count);
+        
+        if (propertyCount === 0) {
+          console.log('📝 No properties found. Seeding database...');
+          const seedSql = fs.readFileSync(path.join(__dirname, 'seed-properties.sql'), 'utf-8');
+          const seedStatements = seedSql
+            .split(';')
+            .map(stmt => stmt.trim())
+            .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
+          
+          let seedSuccess = 0;
+          let seedSkipped = 0;
+          
+          for (const statement of seedStatements) {
+            try {
+              await pool.query(statement);
+              seedSuccess++;
+            } catch (err) {
+              if (err.message.includes('duplicate key') || err.message.includes('already exists')) {
+                seedSkipped++;
+              } else {
+                console.warn('⚠️  Seed warning:', err.message.split('\n')[0]);
+              }
+            }
+          }
+          console.log(`✅ Seed data completed: ${seedSuccess} inserted, ${seedSkipped} skipped`);
+        } else {
+          console.log(`✅ Database has ${propertyCount} properties`);
+        }
+        
         // Check if user_activity table exists and create if missing
         const userActivityCheck = await pool.query(
           "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'user_activity')"
