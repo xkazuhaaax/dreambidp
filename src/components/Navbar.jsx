@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useShortlist } from '../contexts/ShortlistContext';
 import ProfileDropdown from './ProfileDropdown';
@@ -7,8 +7,9 @@ import ProfileDropdown from './ProfileDropdown';
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const { getShortlistedCount } = useShortlist();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -20,6 +21,12 @@ function Navbar() {
 
   const toggleMobileMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    navigate('/login');
   };
 
   return (
@@ -209,6 +216,12 @@ function Navbar() {
                       </Link>
                     </>
                   )}
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-400 hover:text-red-300 hover:bg-midnight-800 w-full text-left block px-4 py-3 rounded-btn text-base font-medium transition-colors"
+                  >
+                    Logout
+                  </button>
                 </>
               ) : (
                 <>

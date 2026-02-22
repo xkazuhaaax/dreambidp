@@ -54,16 +54,19 @@ export function ShortlistProvider({ children }) {
         // Store property data along with auction_date for expiry checking
         return [...prev, {
           id: property.id,
-          title: property.title,
+          title: property.title || 'Property',
           cover_image_url: property.cover_image_url,
           reserve_price: property.reserve_price,
-          city: property.city,
+          city: property.city || 'Location TBD',
           state: property.state,
           bedrooms: property.bedrooms,
           area: property.area,
           property_type: property.property_type,
           auction_date: property.auction_date,
           status: property.status,
+          estimated_market_value: property.estimated_market_value,
+          latitude: property.latitude,
+          longitude: property.longitude,
         }];
       }
     });

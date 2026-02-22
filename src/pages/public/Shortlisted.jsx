@@ -108,19 +108,19 @@ function Shortlisted() {
       </Link>
 
       {/* Property Details */}
-      <div className="p-5 flex flex-col h-full">
+      <div className="p-5 flex flex-col h-full bg-midnight-900">
         <Link
           to={`/properties/${property.id}`}
           className="group/title"
         >
           <h3 className="font-semibold text-text-primary text-base line-clamp-2 group-hover/title:text-gold transition mb-3">
-            {property.title}
+            {property.title || 'Property'}
           </h3>
         </Link>
 
         {/* Location */}
         <p className="text-sm text-text-secondary mb-4">
-          {property.city}
+          {property.city || 'Location'}
           {property.state ? `, ${property.state}` : ''}
         </p>
 
@@ -147,7 +147,7 @@ function Shortlisted() {
 
         {/* Price */}
         <div className="mt-auto pt-3 border-t border-midnight-700">
-          <p className="text-lg font-bold text-text-primary">
+          <p className="text-lg font-bold text-gold">
             ₹{property.reserve_price ? property.reserve_price.toLocaleString() : 'N/A'}
           </p>
           <p className="text-xs text-text-secondary mt-1">Reserve Price</p>
@@ -156,7 +156,7 @@ function Shortlisted() {
         {/* View Details Button */}
         <Link
           to={`/properties/${property.id}`}
-          className="mt-4 px-4 py-2 bg-midnight-800 text-gold hover:bg-midnight-700 rounded-lg transition text-center text-sm font-medium border border-midnight-700 hover:border-gold"
+          className="mt-4 px-4 py-2 bg-gold/10 text-gold hover:bg-gold/20 rounded-lg transition text-center text-sm font-medium border border-gold/30 hover:border-gold"
         >
           View Details
         </Link>
@@ -233,7 +233,7 @@ function Shortlisted() {
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {groupedProperties.active.map(renderPropertyCard)}
+                  {groupedProperties.active.map((property) => renderPropertyCard(property))}
                 </div>
               </div>
             )}
@@ -251,7 +251,7 @@ function Shortlisted() {
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-75">
-                  {groupedProperties.expired.map(renderPropertyCard)}
+                  {groupedProperties.expired.map((property) => renderPropertyCard(property))}
                 </div>
               </div>
             )}

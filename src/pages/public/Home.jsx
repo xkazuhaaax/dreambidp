@@ -1,31 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { propertiesAPI } from '../../services/api';
 import { shareProperty } from '../../utils/whatsapp';
 import { getImageUrl } from '../../utils/imageUrl';
 import { useShortlist } from '../../contexts/ShortlistContext';
-
-// Custom hook for typing effect
-function useTypewriter(text, speed = 50) {
-  const [displayedText, setDisplayedText] = useState('');
-
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < text.length) {
-        setDisplayedText(text.substring(0, index + 1));
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, speed);
-
-    return () => clearInterval(interval);
-  }, [text, speed]);
-
-  return displayedText;
-}
 
 // Custom hook for debouncing
 function useDebounce(value, delay) {
@@ -86,9 +66,8 @@ function Home() {
     }
   };
 
-  // Typewriter effect for hero title
+  // Hero text
   const heroText = 'Invest in Curated Luxury Real Estate Through Transparent Bidding';
-  const displayedText = useTypewriter(heroText, 30);
 
   // Debounce text inputs (city) to avoid API calls on every keystroke
   const debouncedCity = useDebounce(filters.city, 500);
@@ -148,7 +127,7 @@ function Home() {
 
     const interval = setInterval(() => {
       // Smooth continuous scroll
-      const scrollAmount = 280; // width of card + gap
+      const scrollAmount = 140; // width of card + gap (adjusted for circular icons)
       const currentScroll = container.scrollLeft;
       const maxScroll = container.scrollWidth - container.clientWidth;
       
@@ -170,29 +149,28 @@ function Home() {
   return (
     <div>
       {/* Hero Section with Overlaid Search Bar */}
-      <div className="relative bg-gradient-to-b from-midnight-950 to-midnight-900 text-white pt-12 md:pt-20 pb-32 md:pb-48 overflow-hidden">
+      <div className="relative bg-gradient-to-b from-midnight-950 to-midnight-900 text-white pt-8 md:pt-12 pb-20 md:pb-32 overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
         }}></div>
-        <div className="relative max-w-4xl mx-auto px-4 md:px-16 mb-12">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold mb-6 md:mb-8 leading-tight text-text-primary min-h-32 md:min-h-40">
-            {displayedText}
-            <span className={`ml-1 ${displayedText.length === heroText.length ? 'hidden' : 'inline-block w-1 h-12 md:h-16 bg-gold animate-pulse'}`}></span>
+        <div className="relative max-w-5xl mx-auto px-4 md:px-8 mb-8">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 md:mb-6 leading-tight text-text-primary max-w-3xl">
+            Invest in Curated Luxury Real Estate Through Transparent Bidding
           </h1>
-          <p className="text-base md:text-lg lg:text-xl text-text-muted mb-8 md:mb-10 max-w-2xl leading-relaxed">
+          <p className="text-sm md:text-base lg:text-lg text-text-muted mb-8 md:mb-10 max-w-2xl leading-relaxed">
             A premium platform crafted for serious investors to discover, evaluate, and bid on high-value properties with trust and clarity.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 items-start">
             <Link
               to="/properties"
-              className="btn-primary inline-flex items-center justify-center gap-2 text-center"
+              className="btn-primary inline-flex items-center justify-center gap-2 text-center whitespace-nowrap"
             >
               Explore Properties
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </Link>
-            <Link to="/register" className="btn-secondary inline-flex items-center justify-center gap-2 text-center">
+            <Link to="/register" className="btn-secondary inline-flex items-center justify-center gap-2 text-center whitespace-nowrap">
               Get Started
             </Link>
           </div>
@@ -200,7 +178,7 @@ function Home() {
       </div>
 
       {/* Search Bar Section */}
-      <div className="relative -mt-20 sm:-mt-24 md:-mt-32 px-4 sm:px-6 md:px-8 pb-0 z-10">
+      <div className="relative -mt-12 sm:-mt-16 md:-mt-20 px-4 sm:px-6 md:px-8 pb-0 z-10">
         <div className="max-w-6xl mx-auto">
           <div className="bg-midnight-800 rounded-2xl shadow-2xl overflow-hidden border border-midnight-700">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 p-0">
@@ -255,11 +233,11 @@ function Home() {
               </div>
 
               {/* Search Button */}
-              <div className="p-6 flex items-end">
+              <div className="p-6 flex items-center justify-center md:justify-end">
                 <Link
                   to="/properties"
                   state={{ filters: filters }}
-                  className="w-full px-6 py-3 bg-gold text-midnight-950 rounded-lg hover:bg-gold-hover focus:outline-none focus:ring-2 focus:ring-gold transition-all font-semibold text-center shadow-md hover:shadow-lg"
+                  className="w-full md:w-auto px-8 py-3 bg-gold text-midnight-950 rounded-lg hover:bg-gold-hover focus:outline-none focus:ring-2 focus:ring-gold transition-all font-semibold text-center shadow-md hover:shadow-lg whitespace-nowrap"
                 >
                   Search
                 </Link>
@@ -270,7 +248,7 @@ function Home() {
       </div>
 
       {/* Discover Properties in Top Cities Section */}
-      <div className="bg-gradient-to-b from-midnight-950 to-midnight-900 px-4 md:px-8 py-16 md:py-24">
+      <div className="bg-gradient-to-b from-midnight-950 to-midnight-900 px-4 md:px-8 py-12 md:py-16">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -294,7 +272,7 @@ function Home() {
               onClick={() => {
                 const container = document.getElementById('citiesCarousel');
                 if (container) {
-                  container.scrollBy({ left: -280, behavior: 'smooth' });
+                  container.scrollBy({ left: -120, behavior: 'smooth' });
                 }
               }}
               className="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 z-20 bg-gold text-midnight-950 rounded-full p-2 md:p-3 hover:bg-gold-hover transition-all shadow-lg hover:shadow-xl opacity-0 group-hover:opacity-100 transition-opacity"
@@ -310,7 +288,7 @@ function Home() {
               onClick={() => {
                 const container = document.getElementById('citiesCarousel');
                 if (container) {
-                  container.scrollBy({ left: 280, behavior: 'smooth' });
+                  container.scrollBy({ left: 120, behavior: 'smooth' });
                 }
               }}
               className="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 z-20 bg-gold text-midnight-950 rounded-full p-2 md:p-3 hover:bg-gold-hover transition-all shadow-lg hover:shadow-xl opacity-0 group-hover:opacity-100 transition-opacity"
@@ -337,20 +315,17 @@ function Home() {
                   key={index}
                   to="/properties"
                   state={{ filters: { city: city.city } }}
-                  className="flex-shrink-0 w-32 md:w-40 text-center group cursor-pointer"
+                  className="flex-shrink-0 flex flex-col items-center text-center group cursor-pointer"
                 >
-                  <div className="relative h-32 md:h-40 rounded-lg overflow-hidden mb-3 md:mb-4 shadow-lg hover:shadow-2xl transition-all transform group-hover:scale-110">
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden mb-3 md:mb-4 shadow-lg hover:shadow-2xl transition-all transform group-hover:scale-110 border-2 border-gold">
                     <img
                       src={city.image}
                       alt={city.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Crect fill="%231F2A3D" width="300" height="300"/%3E%3Ctext fill="%23CBA135" x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-size="20"%3E' + city.name + '%3C/text%3E%3C/svg%3E';
+                        e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Ccircle cx="150" cy="150" r="150" fill="%231F2A3D"/%3E%3Ctext fill="%23CBA135" x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-size="40" font-weight="bold"%3E' + city.name.charAt(0) + '%3C/text%3E%3C/svg%3E';
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-midnight-950 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
-                      <span className="text-gold font-semibold text-sm">Explore</span>
-                    </div>
                   </div>
                   <h3 className="text-sm md:text-base font-bold text-white group-hover:text-gold transition-colors">{city.name}</h3>
                   <p className="text-xs text-text-secondary">{city.city}</p>
@@ -367,7 +342,7 @@ function Home() {
       </div>
 
       {/* Featured Properties */}
-      <div className="bg-gradient-to-b from-midnight-900 to-midnight-950 px-4 md:px-8 py-12 md:py-24">
+      <div className="bg-gradient-to-b from-midnight-900 to-midnight-950 px-4 md:px-8 py-8 md:py-16">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-10 md:mb-16">Featured Properties</h2>
 
@@ -385,7 +360,7 @@ function Home() {
                     : null);
 
                 return (
-                <div key={property.id} className="group card overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div key={property.id} className="group card overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full">
                   <div className="relative h-48 md:h-64 overflow-hidden bg-midnight-800">
                     {imageUrl ? (
                       <img
@@ -401,30 +376,60 @@ function Home() {
                         <span className="text-text-secondary">No Image</span>
                       </div>
                     )}
+                    
+                    {/* Wishlist Button */}
+                    <button
+                      onClick={() => {
+                        toggleShortlist(property);
+                        toast.success(isShortlisted(property.id) ? 'Removed from shortlist' : 'Added to shortlist');
+                      }}
+                      className="absolute top-4 right-4 p-2 bg-midnight-800 rounded-full hover:bg-midnight-700 transition"
+                    >
+                      <svg className={`w-5 h-5 ${isShortlisted(property.id) ? 'fill-red-500 text-red-500' : 'text-text-muted'}`} viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                      </svg>
+                    </button>
                   </div>
-                  <div className="p-4 md:p-6 flex flex-col">
+                  <div className="p-4 md:p-6 flex flex-col h-full">
                     <div className="flex-grow">
-                      <h3 className="text-xl md:text-2xl font-bold text-white mb-2 min-h-14 md:min-h-16 line-clamp-2">{property.title}</h3>
+                      <h3 className="text-lg md:text-xl font-bold text-white mb-2 line-clamp-2 min-h-14">
+                        {property.title}
+                      </h3>
                       <p className="text-text-secondary text-xs md:text-sm mb-3">
-                        📍 {property.city}, {property.state} • {property.property_size} sq.ft
+                        📍 {property.city}, {property.state} • {property.property_size || 'N/A'} sq.ft
                       </p>
-                      <div className="space-y-1 md:space-y-2">
+                      <div className="space-y-2">
                         <div>
                           <p className="text-text-secondary text-xs font-semibold uppercase tracking-wide mb-1">Reserve Price</p>
                           <p className="text-lg md:text-2xl font-bold text-gold">₹{parseFloat(property.reserve_price).toLocaleString('en-IN')}</p>
+                        </div>
+                        <div className="flex justify-between text-xs pt-2 border-t border-midnight-700">
+                          <div>
+                            <p className="text-text-secondary">Application Date</p>
+                            <p className="text-text-primary font-medium">
+                              {property.auction_date 
+                                ? new Date(property.auction_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+                                : 'N/A'
+                              }
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-text-secondary">Possession Status</p>
+                            <p className="text-text-primary font-medium">{property.possession_type || 'Physical'}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div className="flex gap-2 md:gap-3 mt-4 md:mt-6 pt-4 md:pt-6 border-t border-midnight-700">
                       <Link
                         to={`/properties/${property.id}`}
-                        className="flex-1 btn-primary text-center text-xs md:text-sm py-3 md:py-4"
+                        className="flex-1 btn-primary text-center text-xs md:text-sm py-3 md:py-3 whitespace-nowrap"
                       >
                         View Details
                       </Link>
                       <button
                         onClick={() => shareProperty(property)}
-                        className="px-3 md:px-4 py-3 md:py-4 bg-status-live text-white rounded-btn hover:bg-green-600 transition-all"
+                        className="px-3 md:px-4 py-3 md:py-3 bg-status-live text-white rounded-btn hover:bg-green-600 transition-all"
                         title="Share on WhatsApp"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -504,7 +509,7 @@ function Home() {
                                 <span className="text-text-secondary">No Image</span>
                               </div>
                             )}
-                            <div className="absolute top-4 right-4">
+                            <div className="absolute top-4 left-4">
                               <span className={`px-4 py-2 rounded-full text-xs font-bold backdrop-blur-sm ${
                                 property.auction_status === 'active' ? 'bg-status-live/90 text-white' :
                                 property.auction_status === 'upcoming' ? 'bg-gold/90 text-midnight-950' :
@@ -513,6 +518,19 @@ function Home() {
                                 {property.auction_status === 'active' ? '🔴 Bidding Live' : property.auction_status.toUpperCase()}
                               </span>
                             </div>
+                            
+                            {/* Wishlist Button */}
+                            <button
+                              onClick={() => {
+                                toggleShortlist(property);
+                                toast.success(isShortlisted(property.id) ? 'Removed from shortlist' : 'Added to shortlist');
+                              }}
+                              className="absolute top-4 right-4 p-2 bg-midnight-800 rounded-full hover:bg-midnight-700 transition"
+                            >
+                              <svg className={`w-5 h-5 ${isShortlisted(property.id) ? 'fill-red-500 text-red-500' : 'text-text-muted'}`} viewBox="0 0 24 24">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                              </svg>
+                            </button>
                           </div>
                           <div className="p-4 md:p-6 flex-grow flex flex-col">
                             <h3 className="text-lg md:text-xl font-bold text-white mb-2 line-clamp-2">{property.title}</h3>

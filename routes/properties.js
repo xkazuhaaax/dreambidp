@@ -223,7 +223,14 @@ router.post('/', authenticate, authorize('admin', 'staff'), uploadImages, [
       bathrooms,
       floors,
       reserve_price,
-      auction_date
+      auction_date,
+      auction_time,
+      estimated_market_value,
+      built_up_area,
+      total_area,
+      emd,
+      possession_type,
+      application_end_date
     } = req.body;
 
     // Determine cover image
@@ -239,8 +246,9 @@ router.post('/', authenticate, authorize('admin', 'staff'), uploadImages, [
       `INSERT INTO properties (
         title, description, property_type, address, city, state, zip_code, country,
         latitude, longitude, area_sqft, bedrooms, bathrooms, floors,
-        reserve_price, auction_date, cover_image_url, created_by
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+        reserve_price, auction_date, auction_time, cover_image_url, created_by,
+        estimated_market_value, built_up_area, total_area, emd, possession_type, application_end_date
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25)
       RETURNING *`,
       [
         title, description || null, property_type || null, address, city,
@@ -249,7 +257,13 @@ router.post('/', authenticate, authorize('admin', 'staff'), uploadImages, [
         area_sqft ? parseFloat(area_sqft) : null,
         bedrooms ? parseInt(bedrooms) : null, bathrooms ? parseInt(bathrooms) : null,
         floors ? parseInt(floors) : null,
-        parseFloat(reserve_price), new Date(auction_date), coverImageUrl, req.user.id
+        parseFloat(reserve_price), new Date(auction_date), auction_time || null, coverImageUrl, req.user.id,
+        estimated_market_value ? parseFloat(estimated_market_value) : null,
+        built_up_area ? parseFloat(built_up_area) : null,
+        total_area ? parseFloat(total_area) : null,
+        emd ? parseFloat(emd) : null,
+        possession_type || null,
+        application_end_date ? new Date(application_end_date) : null
       ]
     );
 
@@ -289,7 +303,8 @@ router.put('/:id', authenticate, authorize('admin', 'staff'), uploadImages, asyn
     const {
       title, description, property_type, address, city, state, zip_code, country,
       latitude, longitude, area_sqft, bedrooms, bathrooms, floors,
-      reserve_price, auction_date, auction_status, is_featured, is_active
+      reserve_price, auction_date, auction_time, auction_status, is_featured, is_active,
+      estimated_market_value, built_up_area, total_area, emd, possession_type, application_end_date
     } = req.body;
 
     // Build update query dynamically
@@ -351,6 +366,41 @@ router.put('/:id', authenticate, authorize('admin', 'staff'), uploadImages, asyn
       paramCount++;
       updates.push(`is_active = $${paramCount}`);
       values.push(is_active === 'true' || is_active === true);
+    }
+    if (auction_time !== undefined) {
+      paramCount++;
+      updates.push(`auction_time = $${paramCount}`);
+      values.push(auction_time || null);
+    }
+    if (estimated_market_value !== undefined) {
+      paramCount++;
+      updates.push(`estimated_market_value = $${paramCount}`);
+      values.push(estimated_market_value ? parseFloat(estimated_market_value) : null);
+    }
+    if (built_up_area !== undefined) {
+      paramCount++;
+      updates.push(`built_up_area = $${paramCount}`);
+      values.push(built_up_area ? parseFloat(built_up_area) : null);
+    }
+    if (total_area !== undefined) {
+      paramCount++;
+      updates.push(`total_area = $${paramCount}`);
+      values.push(total_area ? parseFloat(total_area) : null);
+    }
+    if (emd !== undefined) {
+      paramCount++;
+      updates.push(`emd = $${paramCount}`);
+      values.push(emd ? parseFloat(emd) : null);
+    }
+    if (possession_type !== undefined) {
+      paramCount++;
+      updates.push(`possession_type = $${paramCount}`);
+      values.push(possession_type || null);
+    }
+    if (application_end_date !== undefined) {
+      paramCount++;
+      updates.push(`application_end_date = $${paramCount}`);
+      values.push(application_end_date ? new Date(application_end_date) : null);
     }
 
     // Handle cover image

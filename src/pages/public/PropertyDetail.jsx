@@ -102,6 +102,7 @@ function PropertyDetail() {
     ['property', id],
     () => propertiesAPI.getById(id),
     {
+      enabled: !!id,
       onSuccess: () => {
         interestsAPI.track({ property_id: parseInt(id), interest_type: 'view' });
       },
@@ -341,8 +342,8 @@ function PropertyDetail() {
           {/* Left Column - Property Content (70%) */}
           <div className="flex-1 space-y-8">
             {/* Property Header */}
-            <div className="bg-midnight-900 border border-midnight-700 rounded-2xl shadow-sm p-6 lg:p-8">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="bg-midnight-900 border border-midnight-700 rounded-2xl shadow-sm p-4 lg:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                 <div className="flex items-center gap-3">
                   <span className="px-3 py-1 bg-midnight-800 text-text-secondary text-sm font-medium rounded-lg">
                     Property ID: {property.id}
@@ -372,20 +373,20 @@ function PropertyDetail() {
                 </div>
               </div>
               
-              <h1 className="text-2xl lg:text-3xl font-bold text-text-primary mb-6">
+              <h1 className="text-xl lg:text-2xl font-bold text-text-primary mb-4">
                 {property.title}
               </h1>
               
               <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-text-secondary">Reserve Price:</span>
-                  <span className="text-2xl lg:text-3xl font-bold text-text-primary">
+                  <span className="text-xl lg:text-2xl font-bold text-text-primary">
                     ₹{property.reserve_price ? property.reserve_price.toLocaleString() : 'N/A'}
                   </span>
                 </div>
                 {property.estimated_market_value && (
                   <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 bg-green-50 text-green-700 text-sm font-medium rounded-lg border border-green-200">
+                    <span className="px-3 py-1 bg-green-500/20 text-green-300 text-sm font-medium rounded-lg border border-green-500/30">
                       Est. Market Value: ₹{property.estimated_market_value.toLocaleString()}
                     </span>
                   </div>
@@ -407,32 +408,44 @@ function PropertyDetail() {
                   )}
                   {property.area && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">Area</span>
-                      <span className="text-sm font-medium text-gray-900">{property.area} sq.ft.</span>
+                      <span className="text-sm text-text-secondary">Area</span>
+                      <span className="text-sm font-medium text-text-primary">{property.area} sq.ft.</span>
                     </div>
                   )}
-                  {property.bedrooms && (
+                  {property.built_up_area && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">Bedrooms</span>
-                      <span className="text-sm font-medium text-gray-900">{property.bedrooms}</span>
+                      <span className="text-sm text-text-secondary">Built-Up Area</span>
+                      <span className="text-sm font-medium text-text-primary">{property.built_up_area} sq.ft.</span>
                     </div>
                   )}
-                  {property.bathrooms && (
+                  {property.total_area && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">Bathrooms</span>
-                      <span className="text-sm font-medium text-gray-900">{property.bathrooms}</span>
+                      <span className="text-sm text-text-secondary">Total Area</span>
+                      <span className="text-sm font-medium text-text-primary">{property.total_area} sq.ft.</span>
+                    </div>
+                  )}
+                  {property.bedrooms > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-sm text-text-secondary">Bedrooms</span>
+                      <span className="text-sm font-medium text-text-primary">{property.bedrooms}</span>
+                    </div>
+                  )}
+                  {property.bathrooms > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-sm text-text-secondary">Bathrooms</span>
+                      <span className="text-sm font-medium text-text-primary">{property.bathrooms}</span>
                     </div>
                   )}
                   {property.city && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">City</span>
-                      <span className="text-sm font-medium text-gray-900">{property.city}</span>
+                      <span className="text-sm text-text-secondary">City</span>
+                      <span className="text-sm font-medium text-text-primary">{property.city}</span>
                     </div>
                   )}
                   {property.state && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">State</span>
-                      <span className="text-sm font-medium text-gray-900">{property.state}</span>
+                      <span className="text-sm text-text-secondary">State</span>
+                      <span className="text-sm font-medium text-text-primary">{property.state}</span>
                     </div>
                   )}
                 </div>
@@ -444,29 +457,61 @@ function PropertyDetail() {
                 <div className="space-y-3">
                   {property.auction_date && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-text-muted">Auction Date</span>
+                      <span className="text-sm text-text-secondary">Auction Date</span>
                       <span className="text-sm font-medium text-text-primary">
                         {new Date(property.auction_date).toLocaleDateString()}
                       </span>
                     </div>
                   )}
+                  {property.auction_time && (
+                    <div className="flex justify-between">
+                      <span className="text-sm text-text-secondary">Auction Time</span>
+                      <span className="text-sm font-medium text-text-primary">
+                        {property.auction_time}
+                      </span>
+                    </div>
+                  )}
+                  {property.application_end_date && (
+                    <div className="flex justify-between">
+                      <span className="text-sm text-text-secondary">Application End Date</span>
+                      <span className="text-sm font-medium text-text-primary">
+                        {new Date(property.application_end_date).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )}
+                  {property.emd && (
+                    <div className="flex justify-between">
+                      <span className="text-sm text-text-secondary">EMD Amount</span>
+                      <span className="text-sm font-medium text-text-primary">
+                        ₹{property.emd.toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+                  {property.possession_type && (
+                    <div className="flex justify-between">
+                      <span className="text-sm text-text-secondary">Possession Type</span>
+                      <span className="text-sm font-medium text-text-primary">
+                        {property.possession_type}
+                      </span>
+                    </div>
+                  )}
                   {property.earnest_money_deposit && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">EMD Amount</span>
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm text-text-secondary">EMD (Legacy)</span>
+                      <span className="text-sm font-medium text-text-primary">
                         ₹{property.earnest_money_deposit.toLocaleString()}
                       </span>
                     </div>
                   )}
                   {property.status && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">Status</span>
+                      <span className="text-sm text-text-secondary">Status</span>
                       <span className={`text-sm font-medium px-2 py-1 rounded-lg ${
-                        property.status === 'upcoming' ? 'bg-blue-50 text-blue-700' :
-                        property.status === 'active' ? 'bg-green-50 text-green-700' :
-                        property.status === 'expired' ? 'bg-red-50 text-red-700' :
-                        property.status === 'sold' ? 'bg-purple-50 text-purple-700' :
-                        'bg-gray-50 text-gray-700'
+                        property.status === 'upcoming' ? 'bg-blue-500/20 text-blue-300' :
+                        property.status === 'active' ? 'bg-green-500/20 text-green-300' :
+                        property.status === 'expired' ? 'bg-red-500/20 text-red-300' :
+                        property.status === 'sold' ? 'bg-purple-500/20 text-purple-300' :
+                        'bg-gray-500/20 text-gray-300'
                       }`}>
                         {property.status.charAt(0).toUpperCase() + property.status.slice(1)}
                       </span>
@@ -756,7 +801,7 @@ function PropertyDetail() {
                     {similarProperties.map((prop) => (
                       <Link
                         key={prop.id}
-                        to={`/property/${prop.id}`}
+                        to={`/properties/${prop.id}`}
                         className="group flex-shrink-0 lg:flex-shrink w-64 lg:w-full hover:shadow-lg transition-shadow rounded-xl overflow-hidden border border-midnight-700 hover:border-midnight-600 hover:bg-midnight-800"
                       >
                         <div className="flex flex-col h-full">

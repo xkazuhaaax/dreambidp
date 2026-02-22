@@ -34,8 +34,15 @@ function PropertyForm() {
     floors: '',
     reserve_price: '',
     auction_date: '',
+    auction_time: '',
     auction_status: 'upcoming',
     is_featured: false,
+    estimated_market_value: '',
+    built_up_area: '',
+    total_area: '',
+    emd: '',
+    possession_type: '',
+    application_end_date: '',
   });
 
   const [images, setImages] = useState([]);
@@ -62,8 +69,15 @@ function PropertyForm() {
         floors: prop.floors || '',
         reserve_price: prop.reserve_price || '',
         auction_date: prop.auction_date ? prop.auction_date.split('T')[0] : '',
+        auction_time: prop.auction_time || '',
         auction_status: prop.auction_status || 'upcoming',
         is_featured: prop.is_featured || false,
+        estimated_market_value: prop.estimated_market_value || '',
+        built_up_area: prop.built_up_area || '',
+        total_area: prop.total_area || '',
+        emd: prop.emd || '',
+        possession_type: prop.possession_type || '',
+        application_end_date: prop.application_end_date ? prop.application_end_date.split('T')[0] : '',
       });
       setExistingImages(prop.images || []);
     }
@@ -307,6 +321,32 @@ function PropertyForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
+                Built-Up Area (sq ft)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                name="built_up_area"
+                value={formData.built_up_area}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Total Area (sq ft)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                name="total_area"
+                value={formData.total_area}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 Bedrooms
               </label>
               <input
@@ -363,15 +403,80 @@ function PropertyForm() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
+                Estimated Market Value (₹)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                name="estimated_market_value"
+                value={formData.estimated_market_value}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                EMD - Earnest Money Deposit (₹)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                name="emd"
+                value={formData.emd}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 Auction Date
               </label>
               <input
-                type="datetime-local"
+                type="date"
                 name="auction_date"
                 value={formData.auction_date}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Auction Time
+              </label>
+              <input
+                type="time"
+                name="auction_time"
+                value={formData.auction_time}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Application End Date
+              </label>
+              <input
+                type="date"
+                name="application_end_date"
+                value={formData.application_end_date}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Possession Type
+              </label>
+              <select
+                name="possession_type"
+                value={formData.possession_type}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                <option value="">Select Possession Type</option>
+                <option value="Physical">Physical Possession</option>
+                <option value="Virtual">Virtual Possession</option>
+              </select>
             </div>
             {isEdit && (
               <div>
