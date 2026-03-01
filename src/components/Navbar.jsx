@@ -109,7 +109,7 @@ function Navbar() {
                     </span>
                   )}
                 </Link>
-                <Link to="/login" className="text-text-nav hover:text-gold px-4 py-2 rounded-lg transition-colors font-medium text-sm">
+                <Link to="/login" className="inline-flex items-center gap-2 bg-gold text-midnight-950 px-6 md:px-10 py-3 md:py-4 rounded-btn hover:bg-gold-hover transition-all duration-300 font-semibold text-xs md:text-sm">
                   Sign In
                 </Link>
                 <Link to="/signup" className="inline-flex items-center gap-2 bg-gold text-midnight-950 px-6 md:px-10 py-3 md:py-4 rounded-btn hover:bg-gold-hover transition-all duration-300 font-semibold text-xs md:text-sm">
@@ -228,7 +228,7 @@ function Navbar() {
                   <Link
                     to="/login"
                     onClick={() => setMenuOpen(false)}
-                    className="text-text-nav hover:text-gold hover:bg-midnight-800 block px-4 py-3 rounded-btn text-base font-medium transition-colors"
+                    className="inline-flex items-center gap-2 bg-gold text-midnight-950 px-4 py-3 rounded-btn text-base font-semibold hover:bg-gold-hover transition-all duration-300 w-full justify-center"
                   >
                     Sign In
                   </Link>
@@ -241,13 +241,6 @@ function Navbar() {
                   </Link>
                 </>
               )}
-              <Link
-                to="/login"
-                onClick={() => setMenuOpen(false)}
-                className="inline-flex items-center gap-2 bg-gold text-midnight-950 px-4 py-3 rounded-btn text-base font-semibold hover:bg-gold-hover transition-all duration-300 w-full justify-center"
-              >
-                Entity Login
-              </Link>
             </div>
           </div>
         )}
