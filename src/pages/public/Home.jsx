@@ -279,7 +279,7 @@ function Home() {
             <div className="hidden lg:block">
               <div className="relative h-96 rounded-2xl overflow-hidden">
                 <img 
-                  src="/house.png" 
+                  src="/banner.png" 
                   alt="Luxury Property" 
                   className="w-full h-full object-cover"
                 />
