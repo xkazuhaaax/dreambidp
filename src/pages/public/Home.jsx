@@ -120,15 +120,15 @@ function Home() {
 
   // Define cities data
   const citiesData = [
-    { name: 'Delhi', city: 'Delhi', image: 'https://images.unsplash.com/photo-1569163139394-de4798aa62b1?w=300&h=300&fit=crop' },
-    { name: 'Haryana', city: 'Haryana', image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=300&h=300&fit=crop' },
-    { name: 'Noida', city: 'Noida', image: 'https://images.unsplash.com/photo-1518591413033-2461a8812633?w=300&h=300&fit=crop' },
-    { name: 'Gurugram', city: 'Gurugram', image: 'https://images.unsplash.com/photo-1585337981519-0f0f2c3a2e9d?w=300&h=300&fit=crop' },
-    { name: 'Ludhiana', city: 'Ludhiana', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&h=300&fit=crop' },
-    { name: 'Chandigarh', city: 'Chandigarh', image: 'https://images.unsplash.com/photo-1566156542119-a2f1c6c4a8e1?w=300&h=300&fit=crop' },
-    { name: 'Himachal Pradesh', city: 'Himachal Pradesh', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop' },
-    { name: 'Rajasthan', city: 'Rajasthan', image: 'https://images.unsplash.com/photo-1567359781514-3b963ff5b2b5?w=300&h=300&fit=crop' },
-    { name: 'Amritsar', city: 'Amritsar', image: 'https://images.unsplash.com/photo-1542401886-65d27afda266?w=300&h=300&fit=crop' },
+    { name: 'Delhi', city: 'Delhi', image: '/NewDelhi.webp' },
+    { name: 'Haryana', city: 'Haryana', image: '/harayana.jpeg' },
+    { name: 'Noida', city: 'Noida', image: '/noida.jpeg' },
+    { name: 'Gurugram', city: 'Gurugram', image: '/gurugram.jpeg' },
+    { name: 'Ludhiana', city: 'Ludhiana', image: '/Ludhiana.webp' },
+    { name: 'Chandigarh', city: 'Chandigarh', image: '/chandighar.jpeg' },
+    { name: 'Himachal Pradesh', city: 'Himachal Pradesh', image: '/himachal.jpeg' },
+    { name: 'Rajasthan', city: 'Rajasthan', image: '/rajasthan.jpeg' },
+    { name: 'Amritsar', city: 'Amritsar', image: '/amritsar.jpeg' },
   ];
   // Duplicate cities array for seamless infinite loop
   const doubledCities = [...citiesData, ...citiesData];
