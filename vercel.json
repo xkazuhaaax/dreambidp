@@ -7,7 +7,7 @@
   },
   "functions": {
     "api/handler.js": {
-      "runtime": "nodejs@18.x"
+      "runtime": "node@18.x"
     }
   },
   "rewrites": [
