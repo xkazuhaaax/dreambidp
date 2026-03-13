@@ -5,6 +5,11 @@
   "env": {
     "NODE_ENV": "production"
   },
+  "functions": {
+    "api/handler.js": {
+      "runtime": "nodejs@18.x"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
