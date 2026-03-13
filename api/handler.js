@@ -29,8 +29,8 @@ const app = express();
 
 // CORS Configuration
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'https://dreambid-p.vercel.app',
-  'https://dreambid-p.vercel.app',
+  process.env.FRONTEND_URL || 'https://dreambidp.vercel.app',
+  'https://dreambidp.vercel.app',
   'https://dreambid.netlify.app',
   'https://dreambid-new.netlify.app',
   'http://localhost:3000',
