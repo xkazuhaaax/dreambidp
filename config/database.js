@@ -8,10 +8,12 @@ dotenv.config();
 // Build connection config
 let dbConfig;
 
-// Use DATABASE_URL if available (Neon/Railway/Render), otherwise use individual env vars
-if (process.env.DATABASE_URL) {
+// Use DATABASE_URL if available (Neon/Railway/Render), otherwise use NETLIFY_DATABASE_URL, otherwise use individual env vars
+const databaseUrl = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
+
+if (databaseUrl) {
   dbConfig = {
-    connectionString: process.env.DATABASE_URL,
+    connectionString: databaseUrl,
     ssl: { rejectUnauthorized: false }, // Neon requires SSL
     max: 20,
     idleTimeoutMillis: 30000,
