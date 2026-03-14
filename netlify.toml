@@ -1,11 +1,21 @@
 [build]
   command = "npm ci && npm run build"
   publish = "dist"
+  functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "18.18.0"
-  VITE_API_URL = "https://web-production-227cb.up.railway.app/api"
+  NODE_VERSION = "20.11.0"
   NPM_CONFIG_PRODUCTION = "false"
+
+# Environment variables for Neon database
+# Set these in Netlify dashboard:
+# DATABASE_URL: postgresql://user:password@neon.tech/database?sslmode=require
+# NODE_ENV: production
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api:splat"
+  status = 200
 
 [[redirects]]
   from = "/*"
@@ -20,8 +30,13 @@
   command = "npm run build"
   environment = { NODE_ENV = "development" }
 
+[context.branch-deploy]
+  command = "npm run build"
+  environment = { NODE_ENV = "development" }
+
+# Function configuration
 [functions]
-  directory = "functions"
-  included_files = ["src/**/*.jsx", "src/**/*.js"]
+  node_bundler = "esbuild"
+  directory = "netlify/functions"
 
 

@@ -4,6 +4,7 @@
   "env": {
     "NODE_ENV": "production"
   },
+  "note": "This project is now configured to use Netlify + Neon database. See NETLIFY_NEON_SETUP.md for deployment instructions. Vercel configuration is kept for reference only.",
   "rewrites": [
     {
       "source": "/api/(.*)",
