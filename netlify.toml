@@ -12,11 +12,13 @@
 # DATABASE_URL: postgresql://user:password@neon.tech/database?sslmode=require
 # NODE_ENV: production
 
+# API Routes to Netlify Functions
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api:splat"
   status = 200
 
+# SPA fallback - serve index.html for all non-file requests
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -38,5 +40,9 @@
 [functions]
   node_bundler = "esbuild"
   directory = "netlify/functions"
+  
+  # Increase timeout for database operations
+  [functions.api]
+    timeout = 30
 
 
